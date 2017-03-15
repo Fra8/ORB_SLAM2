@@ -25,6 +25,7 @@
 #include <thread>
 #include <pangolin/pangolin.h>
 #include <iomanip>
+#include <unistd.h>
 
 namespace ORB_SLAM2
 {
@@ -172,6 +173,7 @@ cv::Mat System::TrackRGBD(const cv::Mat &im, const cv::Mat &depthmap, const doub
         exit(-1);
     }    
 
+    
     // Check mode change
     {
         unique_lock<mutex> lock(mMutexMode);
@@ -201,7 +203,8 @@ cv::Mat System::TrackRGBD(const cv::Mat &im, const cv::Mat &depthmap, const doub
     unique_lock<mutex> lock(mMutexReset);
     if(mbReset)
     {
-        mpTracker->Reset();
+        // mpTracker->Reset();
+        mpTracker->ResetDepth(depthFactor); // Here we call our Reset changing the DeptMapFactor taken from the slider
         mbReset = false;
     }
     }
@@ -296,6 +299,14 @@ void System::Reset()
 {
     unique_lock<mutex> lock(mMutexReset);
     mbReset = true;
+}
+
+void System::ResetDepth(int d)
+{
+    unique_lock<mutex> lock(mMutexReset);
+    mbReset = true;
+    depthFactor=d; 
+    
 }
 
 void System::Shutdown()
