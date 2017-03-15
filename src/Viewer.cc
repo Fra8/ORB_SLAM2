@@ -20,7 +20,7 @@
 
 #include "Viewer.h"
 #include <pangolin/pangolin.h>
-
+#include <unistd.h>
 #include <mutex>
 
 namespace ORB_SLAM2
@@ -71,8 +71,10 @@ void Viewer::Run()
     pangolin::Var<bool> menuShowKeyFrames("menu.Show KeyFrames",true,true);
     pangolin::Var<bool> menuShowGraph("menu.Show Graph",true,true);
     pangolin::Var<bool> menuLocalizationMode("menu.Localization Mode",false,true);
+    pangolin::Var<int> menuDepth("menu.DepthMapFactor", mpTracker->mdmf, 0,5000); // Variable to set DepthMapFactor 
     pangolin::Var<bool> menuReset("menu.Reset",false,false);
-
+   
+     
     // Define Camera Render Object (for view / scene browsing)
     pangolin::OpenGlRenderState s_cam(
                 pangolin::ProjectionMatrix(1024,768,mViewpointF,mViewpointF,512,389,0.1,1000),
@@ -149,7 +151,8 @@ void Viewer::Run()
             bLocalizationMode = false;
             bFollow = true;
             menuFollowCamera = true;
-            mpSystem->Reset();
+            // mpSystem->Reset();
+            mpSystem->ResetDepth(menuDepth); // Here we call our Reset changing the DepthMapFactor taken from the slider
             menuReset = false;
         }
 
