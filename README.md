@@ -30,6 +30,8 @@ To launch the system specifying parameters type:
 ```
 roslaunch ORB_SLAM2 sim.launch world:=basic rgb:=/firefly/vi_sensor/left/image_raw depth:=/firefly/vi_sensor/camera_depth/camera/image_raw
 ```
+## Documentation 
+Up-to-date documentation for this release is accessible from ./docs/html/index.html .
 
 # ORB-SLAM2
 **Authors:** [Raul Mur-Artal](http://webdiis.unizar.es/~raulmur/), [Juan D. Tardos](http://webdiis.unizar.es/~jdtardos/), [J. M. M. Montiel](http://webdiis.unizar.es/~josemari/) and [Dorian Galvez-Lopez](http://doriangalvez.com/) ([DBoW2](https://github.com/dorian3d/DBoW2))
