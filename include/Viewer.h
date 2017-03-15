@@ -26,7 +26,7 @@
 #include "MapDrawer.h"
 #include "Tracking.h"
 #include "System.h"
-
+#include <unistd.h>
 #include <mutex>
 
 namespace ORB_SLAM2
@@ -44,6 +44,10 @@ public:
 
     // Main thread function. Draw points, keyframes, the current camera pose and the last processed
     // frame. Drawing is refreshed according to the camera fps. We use Pangolin.
+    /**
+     * Builds the menu of the viewer and checks if the user changes the settings or asks for reset.
+     * This version also adds a slider to change the DepthMapFactor when the reset button is pushed.
+    */
     void Run();
 
     void RequestFinish();
@@ -70,7 +74,6 @@ private:
     float mImageWidth, mImageHeight;
 
     float mViewpointX, mViewpointY, mViewpointZ, mViewpointF;
-
     bool CheckFinish();
     void SetFinish();
     bool mbFinishRequested;
@@ -88,4 +91,3 @@ private:
 
 #endif // VIEWER_H
 	
-
