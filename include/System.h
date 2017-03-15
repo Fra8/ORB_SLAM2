@@ -25,7 +25,7 @@
 #include<string>
 #include<thread>
 #include<opencv2/core/core.hpp>
-
+#include <unistd.h>
 #include "Tracking.h"
 #include "FrameDrawer.h"
 #include "MapDrawer.h"
@@ -66,10 +66,11 @@ public:
     // Returns the camera pose (empty if tracking fails).
     cv::Mat TrackStereo(const cv::Mat &imLeft, const cv::Mat &imRight, const double &timestamp);
 
-    // Process the given rgbd frame. Depthmap must be registered to the RGB frame.
-    // Input image: RGB (CV_8UC3) or grayscale (CV_8U). RGB is converted to grayscale.
-    // Input depthmap: Float (CV_32F).
-    // Returns the camera pose (empty if tracking fails).
+    /** Process the given rgbd frame. Depthmap must be registered to the RGB frame.
+     * Here the Reset method is called to change the DeptMapFactor taken from the slider.
+     * @param im RGB (CV_8UC3) or grayscale (CV_8U). RGB is converted to grayscale.
+     * @param depthmap Float (CV_32F).
+     * @return the camera pose (empty if tracking fails). */
     cv::Mat TrackRGBD(const cv::Mat &im, const cv::Mat &depthmap, const double &timestamp);
 
     // Proccess the given monocular frame
@@ -88,7 +89,11 @@ public:
 
     // Reset the system (clear map)
     void Reset();
-
+    /** Reset the system
+     * (clears the map, resets the checkboxes and updates the depthMapFactor)
+     * @param d the value of the DepthMapFactor taken from the viewer
+     */
+    void ResetDepth(int);
     // All threads will be requested to finish.
     // It waits until all threads have finished.
     // This function must be called before saving the trajectory.
@@ -122,6 +127,9 @@ public:
     std::vector<MapPoint*> GetTrackedMapPoints();
     std::vector<cv::KeyPoint> GetTrackedKeyPointsUn();
 
+    // Map structure that stores the pointers to all KeyFrames and MapPoints. 
+     Map* mpMap;
+
 private:
 
     // Input sensor
@@ -134,7 +142,7 @@ private:
     KeyFrameDatabase* mpKeyFrameDatabase;
 
     // Map structure that stores the pointers to all KeyFrames and MapPoints.
-    Map* mpMap;
+    // Map* mpMap;
 
     // Tracker. It receives a frame and computes the associated camera pose.
     // It also decides when to insert a new keyframe, create some new MapPoints and
@@ -163,6 +171,7 @@ private:
     // Reset flag
     std::mutex mMutexReset;
     bool mbReset;
+    int depthFactor;  /**< DepthMapFactor value taken from the viewer when Reset is called */  
 
     // Change mode flags
     std::mutex mMutexMode;
