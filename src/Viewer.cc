@@ -73,8 +73,7 @@ void Viewer::Run()
     pangolin::Var<bool> menuLocalizationMode("menu.Localization Mode",false,true);
     pangolin::Var<int> menuDepth("menu.DepthMapFactor", mpTracker->mdmf, 0,5000); // Variable to set DepthMapFactor 
     pangolin::Var<bool> menuReset("menu.Reset",false,false);
-   
-     
+       
     // Define Camera Render Object (for view / scene browsing)
     pangolin::OpenGlRenderState s_cam(
                 pangolin::ProjectionMatrix(1024,768,mViewpointF,mViewpointF,512,389,0.1,1000),
