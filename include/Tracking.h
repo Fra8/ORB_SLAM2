@@ -24,7 +24,7 @@
 
 #include<opencv2/core/core.hpp>
 #include<opencv2/features2d/features2d.hpp>
-
+#include <unistd.h>
 #include"Viewer.h"
 #include"FrameDrawer.h"
 #include"Map.h"
@@ -73,7 +73,7 @@ public:
 
     // Use this function if you have deactivated local mapping and you only want to localize the camera.
     void InformOnlyTracking(const bool &flag);
-
+    int mdmf; /**< Original value of DepthMapFactor (taken from the settings file) */
 
 public:
 
@@ -114,6 +114,14 @@ public:
     bool mbOnlyTracking;
 
     void Reset();
+    /** Reset Local Mapping, 
+     * reset Loop Closing, 
+     * clear BoW Database,
+     * clear Map (erase MapPoints and KeyFrames),
+     * and save DepthMapFactor.
+     * @param d DepthMapFactor passed by the class System 
+     */
+    void ResetDepth(int);
 
 protected:
 
@@ -196,8 +204,8 @@ protected:
     float mThDepth;
 
     // For RGB-D inputs only. For some datasets (e.g. TUM) the depthmap values are scaled.
-    float mDepthMapFactor;
-
+    float mDepthMapFactor; /**< Normalized value of DepthMapFactor */
+    
     //Current matches in frame
     int mnMatchesInliers;
 
