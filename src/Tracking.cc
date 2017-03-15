@@ -136,9 +136,10 @@ Tracking::Tracking(System *pSys, ORBVocabulary* pVoc, FrameDrawer *pFrameDrawer,
         mThDepth = mbf*(float)fSettings["ThDepth"]/fx;
         cout << endl << "Depth Threshold (Close/Far Points): " << mThDepth << endl;
     }
-
+     
     if(sensor==System::RGBD)
     {
+        mdmf = (int)fSettings["DepthMapFactor"];
         mDepthMapFactor = fSettings["DepthMapFactor"];
         if(fabs(mDepthMapFactor)<1e-5)
             mDepthMapFactor=1;
@@ -474,7 +475,8 @@ void Tracking::Track()
             if(mpMap->KeyFramesInMap()<=5)
             {
                 cout << "Track lost soon after initialisation, reseting..." << endl;
-                mpSystem->Reset();
+           //     mpSystem->Reset();   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    		mpSystem->ResetDepth(mdmf);
                 return;
             }
         }
@@ -1511,6 +1513,8 @@ void Tracking::Reset()
         while(!mpViewer->isStopped())
             usleep(3000);
     }
+     
+    
 
     // Reset Local Mapping
     cout << "Reseting Local Mapper...";
@@ -1526,6 +1530,66 @@ void Tracking::Reset()
     cout << "Reseting Database...";
     mpKeyFrameDB->clear();
     cout << " done" << endl;
+
+    // Clear Map (this erase MapPoints and KeyFrames)
+    mpMap->clear();
+
+    KeyFrame::nNextId = 0;
+    Frame::nNextId = 0;
+    mState = NO_IMAGES_YET;
+
+    if(mpInitializer)
+    {
+        delete mpInitializer;
+        mpInitializer = static_cast<Initializer*>(NULL);
+    }
+
+    mlRelativeFramePoses.clear();
+    mlpReferences.clear();
+    mlFrameTimes.clear();
+    mlbLost.clear();
+
+    if(mpViewer)
+        mpViewer->Release();
+}
+
+
+void Tracking::ResetDepth(int d)
+{
+
+    cout << "System Reseting" << endl;
+    if(mpViewer)
+    {
+        mpViewer->RequestStop();
+        while(!mpViewer->isStopped())
+            usleep(3000);
+    }
+        // Save and normalize DepthMapFactor 
+        mdmf = d; 
+        mDepthMapFactor = d;
+        if(fabs(mDepthMapFactor)<1e-5)
+            mDepthMapFactor=1;
+        else
+            mDepthMapFactor = 1.0f/mDepthMapFactor; 
+    
+
+    // Reset Local Mapping
+    cout << "Reseting Local Mapper...";
+    mpLocalMapper->RequestReset();
+    cout << " done" << endl;
+
+    // Reset Loop Closing
+    cout << "Reseting Loop Closing...";
+    mpLoopClosing->RequestReset();
+    cout << " done" << endl;
+
+    // Clear BoW Database
+    cout << "Reseting Database...";
+    mpKeyFrameDB->clear();
+    cout << " done" << endl;
+
+    // Print depthMapFactor
+    cout << "T: " << d << endl;
 
     // Clear Map (this erase MapPoints and KeyFrames)
     mpMap->clear();
