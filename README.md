@@ -4,7 +4,7 @@
 Localization and mapping is a fundamental aspect for autonomous UAVs operating in unknown environments. The main aim of the assignment is to allow ageneric drone to map the surrounding environment by using an on-board RGB-D camera. To this aim, state-of-the art solutions for RGB-D map reconstruction will be used and integrated with existing internal odometry
 information based, on a Luenberger observer.
 
-## Related Publications:
+## Related Publications
 Erika Cocca, Carola Motolese and Alberto Rivolta, **ORB SLAM 2 with a UAV platform**, 2017.
 
 ## Prerequisites
