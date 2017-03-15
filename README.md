@@ -14,6 +14,9 @@ We use [ROS](http://www.ros.org/).
 ### RotorS 
 We use [RotorS](https://github.com/ethz-asl/rotors_simulator/) for UAV gazebo simulation. Download and install instructions can be found at: https://github.com/ethz-asl/rotors_simulator/ .
 
+### UAV_keyboard_controller
+We use [UAV_keyboard_controller](https://github.com/Fra8/UAV_keyboard_controller) to move the hexacopter in the simulated environment. 
+
 ### ORB-SLAM2 dependecies 
 You have to install all needed dependencies of ORB-SLAM2. You can find the complete list at: https://github.com/raulmur/ORB_SLAM2#2-prerequisites. 
 
