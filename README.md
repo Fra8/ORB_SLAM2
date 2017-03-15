@@ -1,3 +1,33 @@
+# ORB-SLAM 2 with a UAV platform
+**Authors:** Erika Cocca, Carola Motolese, Alberto Rivolta 
+
+Localization and mapping is a fundamental aspect for autonomous UAVs operating in unknown environments. The main aim of the assignment is to allow ageneric drone to map the surrounding environment by using an on-board RGB-D camera. To this aim, state-of-the art solutions for RGB-D map reconstruction will be used and integrated with existing internal odometry
+information based, on a Luenberger observer.
+
+##Related Publications:
+Erika Cocca, Carola Motolese and Alberto Rivolta, **ORB SLAM 2 with a UAV platform**, 2017.
+
+## Prerequisites
+### ROS 
+We use [ROS](http://www.ros.org/). 
+
+### RotorS 
+We use [RotorS](https://github.com/ethz-asl/rotors_simulator/) for UAV gazebo simulation. Download and install instructions can be found at: https://github.com/ethz-asl/rotors_simulator/ .
+
+### ORB-SLAM2 dependecies 
+You have to install all needed dependencies of ORB-SLAM2. You can find the complete list at: https://github.com/raulmur/ORB_SLAM2#2-prerequisites. 
+
+## Running RGBD node in simulation mode
+To launch the system with default parameters type:
+```
+roslaunch ORB_SLAM2 sim.launch
+```
+
+To launch the system specifying parameters type:
+```
+roslaunch ORB_SLAM2 sim.launch world:=basic rgb:=/firefly/vi_sensor/left/image_raw depth:=/firefly/vi_sensor/camera_depth/camera/image_raw
+```
+
 # ORB-SLAM2
 **Authors:** [Raul Mur-Artal](http://webdiis.unizar.es/~raulmur/), [Juan D. Tardos](http://webdiis.unizar.es/~jdtardos/), [J. M. M. Montiel](http://webdiis.unizar.es/~josemari/) and [Dorian Galvez-Lopez](http://doriangalvez.com/) ([DBoW2](https://github.com/dorian3d/DBoW2))
 
